@@ -66,6 +66,12 @@ class TestScatterPlot(svgTest):
         self.assertSetEqual(set(pointcolors),
                             {'#000', '#e2a'})
 
+    def test_should_have_numeric_values_for_circle_locations(self):
+        coll = plots.scatterplot([0], [1, 2], ['#000'])
+
+        for point in coll['points']:
+            self.assert_numeric_attributes(point, ['cy', 'cx', 'r'])
+
 
 class TestBoxPlot(svgTest):
 
@@ -73,3 +79,11 @@ class TestBoxPlot(svgTest):
         coll = plots.boxplot(list(range(20)), 0, 1)
         self.assertSetEqual(set(coll.keys()),
                             {'box', 'whiskers', 'median'})
+
+    def test_should_have_numeric_values_for_plot_elements(self):
+        coll = plots.boxplot(list(range(20)), 0, 1)
+        for line in coll.select('whiskers', 'median').elements:
+            self.assert_numeric_attributes(line, ['x1', 'x2', 'y1', 'y2'])
+
+        box = coll['box'][0]
+        self.assert_numeric_attributes(box, ['width', 'height', 'x', 'y'])
