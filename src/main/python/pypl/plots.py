@@ -41,8 +41,9 @@ def scatterplot(x, y, colors, cycle=True):
     return output
 
 
-def boxplot(data, loc, width):
-    p0, p25, p50, p75, p100 = utils.prctiles(data)
+def boxplot(data, scl, loc, width):
+    raw_prc = utils.prctiles(data)
+    p0, p25, p50, p75, p100 = [scl(p) for p in raw_prc]
 
     output = ElementsCollection()
     for points in ((p0, p25), (p75, p100)):
@@ -51,8 +52,8 @@ def boxplot(data, loc, width):
 
     output['box'].append(
         svgwrite.shapes.Rect(
-            insert=(loc-0.5*width, 25),
-            size=(width, p75-p25)))
+            insert=(loc-0.5*width, min(p25, p75)),
+            size=(width, abs(p75-p25))))
 
     output['median'].append(
         svgwrite.shapes.Line(

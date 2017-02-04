@@ -82,8 +82,8 @@ def create_ticklabels(ticks, scl, ticklabelformat, label_loc):
     output = []
     for tick in ticks:
         output.append(
-            svgwrite.text.Text(ticklabelformat.format(scl(tick)),
-                               insert=label_loc(tick)))
+            svgwrite.text.Text(ticklabelformat.format(tick),
+                               insert=label_loc(scl(tick))))
     return output
 
 
@@ -115,8 +115,8 @@ def makeaxis(direction, scl, nticks, loc, specs):
         tick_labl_loc = utils.partialpoint(y=loc+2*ts)
         label_loc = utils.partialpoint(y=loc+5*ts)
 
-    output['line'].append(svgwrite.shapes.Line(axpoint(min(ticks)),
-                                               axpoint(max(ticks))))
+    output['line'].append(svgwrite.shapes.Line(axpoint(scl(min(ticks))),
+                                               axpoint(scl(max(ticks)))))
     if 'label' in specs:
         output['label'].append(create_label(specs['label'],
                                             ticks,

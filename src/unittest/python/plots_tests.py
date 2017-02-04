@@ -75,13 +75,19 @@ class TestScatterPlot(svgTest):
 
 class TestBoxPlot(svgTest):
 
+    def setUp(self):
+        self.scl = mock.Mock()
+        self.scl.data_0 = 0
+        self.scl.data_len = 5
+        self.scl.side_effect = lambda x: x
+
     def test_should_have_correct_fields(self):
-        coll = plots.boxplot(list(range(20)), 0, 1)
+        coll = plots.boxplot(list(range(20)), self.scl, 0, 1)
         self.assertSetEqual(set(coll.keys()),
                             {'box', 'whiskers', 'median'})
 
     def test_should_have_numeric_values_for_plot_elements(self):
-        coll = plots.boxplot(list(range(20)), 0, 1)
+        coll = plots.boxplot(list(range(20)), self.scl, 0, 1)
         for line in coll.select('whiskers', 'median').elements:
             self.assert_numeric_attributes(line, ['x1', 'x2', 'y1', 'y2'])
 

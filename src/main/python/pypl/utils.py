@@ -6,7 +6,8 @@ def lims2len(lims):
 def prctiles(data, p=(0, .25, .5, .75, 1)):
     n = len(data)
     indices = (int((n-1)*p_) for p_ in sorted(p))
-    return [data[i] for i in indices]
+    sdata = list(sorted(data))
+    return [sdata[i] for i in indices]
 
 
 def hpoints(vpos, locations):
