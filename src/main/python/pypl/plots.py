@@ -19,6 +19,12 @@ class ElementsCollection(defaultdict):
             e.attribs[key] = value
         return self
 
+    def select(self, *selected):
+        coll = ElementsCollection()
+        for sel in selected:
+            coll[sel] = self[sel]
+        return coll
+
 
 def scatterplot(x, y, colors, cycle=True):
     output = ElementsCollection()

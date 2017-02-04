@@ -27,6 +27,26 @@ class TestElementsCollection(unittest.TestCase):
         self.assertIn('ANY_ATTRIBUTE', mock_svg_element.attribs)
         self.assertEqual(mock_svg_element.attribs['ANY_ATTRIBUTE'], 2)
 
+    def test_select_should_return_new_collection(self):
+        coll = plots.ElementsCollection()
+        coll['ANY_GROUP'].append('ANY_ELEMENT')
+        coll['ANY_OTHER_GROUP'].append('ANY_OTHER_ELEMENT')
+
+        newcoll = coll.select('ANY_GROUP')
+        self.assertSetEqual(set(newcoll.keys()), {'ANY_GROUP'})
+
+    def test_setting_on_selection_should_modify_original_collection(self):
+        mock_svg_element = mock.Mock()
+        mock_svg_element.attribs = {}
+
+        coll = plots.ElementsCollection()
+        coll['ANY_GROUP'].append(mock_svg_element)
+
+        coll.select('ANY_GROUP').attr('ANY_ATTRIBUTE', 2)
+
+        self.assertIn('ANY_ATTRIBUTE', mock_svg_element.attribs)
+        self.assertEqual(mock_svg_element.attribs['ANY_ATTRIBUTE'], 2)
+
 
 class TestScatterPlot(unittest.TestCase):
 
