@@ -1,4 +1,5 @@
 from pybuilder.core import use_plugin, init, Author
+from pybuilder.vcs import count_travis
 
 use_plugin("python.core")
 use_plugin("python.unittest")
@@ -13,6 +14,7 @@ default_task = "publish"
 authors = [Author('Ingo Fruend', 'pypl@ingofruend.net')]
 url = ''
 license = 'MIT'
+version = '1.0-dev{}'.format(count_travis())
 
 
 @init
