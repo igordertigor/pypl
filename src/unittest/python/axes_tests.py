@@ -1,15 +1,12 @@
-import unittest
-try:
-    from unittest import mock
-except ImportError:
-    import mock
+from unittest import mock
 
 import svgwrite
 
+from pypl.testing import svgTest
 from pypl import axes
 
 
-class TestGetTicks(unittest.TestCase):
+class TestGetTicks(svgTest):
 
     def setUp(self):
         self.scl = mock.Mock()
