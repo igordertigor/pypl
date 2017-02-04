@@ -1,4 +1,4 @@
-from pybuilder.core import use_plugin, init
+from pybuilder.core import use_plugin, init, Author
 
 use_plugin("python.core")
 use_plugin("python.unittest")
@@ -10,7 +10,7 @@ use_plugin("python.distutils")
 
 name = "pypl"
 default_task = "publish"
-authors = ['Author', 'pypl@ingofruend.net']
+authors = [Author('Ingo Fruend', 'pypl@ingofruend.net')]
 url = ''
 license = 'MIT'
 
