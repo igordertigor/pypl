@@ -67,4 +67,4 @@ class TestTufte(svgTest):
             with self.subTest(cmd=cmd):
                 ax = cmd(data, self.scl)
                 for l in ax['lines']:
-                    self.check_numerical(l, ['x1', 'x2', 'y1', 'y2'])
+                    self.assert_numeric_attributes(l, ['x1', 'x2', 'y1', 'y2'])
