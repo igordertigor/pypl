@@ -45,3 +45,11 @@ class TestScatterPlot(unittest.TestCase):
 
         self.assertSetEqual(set(pointcolors),
                             {'#000', '#e2a'})
+
+
+class TestBoxPlot(unittest.TestCase):
+
+    def test_should_have_correct_fields(self):
+        coll = plots.boxplot(list(range(20)), 0, 1)
+        self.assertSetEqual(set(coll.keys()),
+                            {'box', 'whiskers', 'median'})

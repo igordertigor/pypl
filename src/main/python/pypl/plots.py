@@ -2,6 +2,8 @@ import itertools
 import svgwrite
 from collections import defaultdict
 
+from . import utils
+
 
 class ElementsCollection(defaultdict):
 
@@ -29,5 +31,25 @@ def scatterplot(x, y, colors, cycle=True):
 
     for _, x_, y_, col in zip(range(n), x, y, colors):
         output['points'].append(svgwrite.shapes.Circle((x_, y_), fill=col))
+
+    return output
+
+
+def boxplot(data, loc, width):
+    p0, p25, p50, p75, p100 = utils.prctiles(data)
+
+    output = ElementsCollection()
+    for points in ((p0, p25), (p75, p100)):
+        output['whiskers'].append(
+            svgwrite.shapes.Line(*utils.vpoints(loc, points)))
+
+    output['box'].append(
+        svgwrite.shapes.Rect(
+            insert=(loc-0.5*width, 25),
+            size=(width, p75-p25)))
+
+    output['median'].append(
+        svgwrite.shapes.Line(
+            *utils.hpoints(p50, [loc-.5*width, loc+.5*width])))
 
     return output
