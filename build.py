@@ -14,7 +14,7 @@ default_task = "publish"
 authors = [Author('Ingo Fruend', 'pypl@ingofruend.net')]
 url = ''
 license = 'MIT'
-version = '1.0-dev{}'.format(count_travis())
+version = count_travis()
 
 
 @init
