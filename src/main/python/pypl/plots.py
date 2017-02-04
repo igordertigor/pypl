@@ -2,8 +2,6 @@ import itertools
 import svgwrite
 from collections import defaultdict
 
-from . import utils
-
 
 class ElementsCollection(defaultdict):
 
@@ -33,7 +31,3 @@ def scatterplot(x, y, colors, cycle=True):
         output['points'].append(svgwrite.shapes.Circle((x_, y_), fill=col))
 
     return output
-
-
-def tufteplot(data, loc, orientation='vertical'):
-    prctiles = utils.prctiles(data)
