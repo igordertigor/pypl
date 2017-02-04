@@ -43,6 +43,7 @@ def scatterplot(x, y, colors, cycle=True):
 
 def boxplot(data, scl, loc, width):
     raw_prc = utils.prctiles(data)
+    raw_prc = utils.clip(raw_prc, scl)
     p0, p25, p50, p75, p100 = [scl(p) for p in raw_prc]
 
     output = ElementsCollection()
