@@ -6,6 +6,7 @@ except ImportError:
 
 import svgwrite
 
+from pypl import utils
 from pypl import axes
 
 
@@ -43,6 +44,6 @@ class TestVAxis(unittest.TestCase):
         for cmd in self.runfor:
             with self.subTest(cmd=cmd):
                 ax = cmd(self.scl, 5)
-                line_elements = [el for el in ax.elements
+                line_elements = [el for el in utils.all_elements(ax)
                                  if isinstance(el, svgwrite.shapes.Line)]
                 self.assertEqual(len(line_elements), 6)
