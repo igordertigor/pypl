@@ -82,7 +82,7 @@ def create_ticklabels(ticks, scl, ticklabelformat, label_loc):
     output = []
     for tick in ticks:
         output.append(
-            svgwrite.text.Text(ticklabelformat.format(tick),
+            svgwrite.text.Text(ticklabelformat.format(scl(tick)),
                                insert=label_loc(tick)))
     return output
 
