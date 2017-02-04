@@ -93,3 +93,15 @@ class TestBoxPlot(svgTest):
 
         box = coll['box'][0]
         self.assert_numeric_attributes(box, ['width', 'height', 'x', 'y'])
+
+
+class TestLegend(svgTest):
+
+    def test_should_have_numeric_values_for_text_and_markers(self):
+        coll = plots.legend({'a': '#000', 'b': '#efa'}, (10, 10), 10, 5)
+        for label in coll['labels']:
+            self.assert_numeric_attributes(label, ['x', 'y'])
+
+        for marker in coll['fields']:
+            self.assert_numeric_attributes(marker,
+                                           ['x', 'y', 'width', 'height'])
