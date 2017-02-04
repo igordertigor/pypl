@@ -10,6 +10,9 @@ use_plugin("python.distutils")
 
 name = "pypl"
 default_task = "publish"
+authors = ['Author', 'pypl@ingofruend.net']
+url = ''
+license = 'MIT'
 
 
 @init
