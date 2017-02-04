@@ -61,3 +61,19 @@ def boxplot(data, scl, loc, width):
             *utils.hpoints(p50, [loc-.5*width, loc+.5*width])))
 
     return output
+
+
+def legend(names2colors, loc, step, size):
+    output = ElementsCollection()
+    x, y = loc
+    for name, color in names2colors.items():
+        output['fields'].append(
+            svgwrite.shapes.Rect(insert=(x, y),
+                                 size=(size, size),
+                                 fill=color))
+        output['labels'].append(
+            svgwrite.text.Text(name,
+                               insert=(x+2*size, y),
+                               alignment_baseline='middle'))
+        y += step
+    return output
