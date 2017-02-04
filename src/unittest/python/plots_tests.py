@@ -1,12 +1,12 @@
-import unittest
 from unittest import mock
 
 import svgwrite
 
+from pypl.testing import svgTest
 from pypl import plots
 
 
-class TestElementsCollection(unittest.TestCase):
+class TestElementsCollection(svgTest):
 
     def test_elements_should_contain_all_elements(self):
         coll = plots.ElementsCollection()
@@ -48,7 +48,7 @@ class TestElementsCollection(unittest.TestCase):
         self.assertEqual(mock_svg_element.attribs['ANY_ATTRIBUTE'], 2)
 
 
-class TestScatterPlot(unittest.TestCase):
+class TestScatterPlot(svgTest):
 
     def test_should_create_circle_elements_per_data_point(self):
         coll = plots.scatterplot([0], [1, 2], ['#000'])
@@ -67,7 +67,7 @@ class TestScatterPlot(unittest.TestCase):
                             {'#000', '#e2a'})
 
 
-class TestBoxPlot(unittest.TestCase):
+class TestBoxPlot(svgTest):
 
     def test_should_have_correct_fields(self):
         coll = plots.boxplot(list(range(20)), 0, 1)
