@@ -42,6 +42,14 @@ class TestVAxis(svgTest):
                 ax = cmd(self.scl, 5, label="ANY_LABEL")
                 self.assertIn('label', ax)
 
+    def test_all_lines_should_have_numeric_coordinates(self):
+        line_attrs = ['x1', 'x2', 'y1', 'y2']
+        for cmd in self.runfor:
+            with self.subTest(cmd=cmd):
+                ax = cmd(self.scl, 5)
+                for line in ax.select('line', 'ticks').elements:
+                    self.assert_numeric_attributes(line, line_attrs)
+
 
 class TestTufte(svgTest):
 

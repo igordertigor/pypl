@@ -123,7 +123,7 @@ def makeaxis(direction, scl, nticks, loc, specs):
                                             scl,
                                             label_loc))
 
-    for tick in zip(ticks):
+    for tick in ticks:
         output['ticks'].append(svgwrite.shapes.Line(*ticpoints(scl(tick))))
 
     output['ticklabels'] = create_ticklabels(
