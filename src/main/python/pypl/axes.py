@@ -46,13 +46,15 @@ def tufteaxis(data, scl, loc, offset, orientation, specs):
         label_loc = utils.partialpoint(y=loc-10*specs['tick_size'])
 
     output['lines'].append(
-        svgwrite.shapes.Line(pointlocalizer(loc, [scl(p0), scl(p25)])))
+        svgwrite.shapes.Line(*pointlocalizer(loc, [scl(p0), scl(p25)])))
     output['lines'].append(
-        svgwrite.shapes.Line(pointlocalizer(loc+offset, [scl(p25), scl(p50)])))
+        svgwrite.shapes.Line(*pointlocalizer(loc+offset, [scl(p25), scl(p50)]))
+    )
     output['lines'].append(
-        svgwrite.shapes.Line(pointlocalizer(loc+offset, [scl(p50), scl(p75)])))
+        svgwrite.shapes.Line(*pointlocalizer(loc+offset, [scl(p50), scl(p75)]))
+    )
     output['lines'].append(
-        svgwrite.shapes.Line(pointlocalizer(loc, [scl(p75), scl(p100)])))
+        svgwrite.shapes.Line(*pointlocalizer(loc, [scl(p75), scl(p100)])))
 
     ticks = [p0, p25, p50, p75, p100]
     output['ticklabels'] = create_ticklabels(ticks, scl,
