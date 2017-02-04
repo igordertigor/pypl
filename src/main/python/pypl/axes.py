@@ -94,7 +94,7 @@ def get_ticks(scl, nticks):
 
 def create_label(label, ticks, scl, label_loc):
     mticks = scl(functools.reduce(operator.add, ticks)/len(ticks))
-    return svgwrite.text.Text(label, label_loc(mticks))
+    return svgwrite.text.Text(label, insert=label_loc(mticks))
 
 
 def makeaxis(direction, scl, nticks, loc, specs):
