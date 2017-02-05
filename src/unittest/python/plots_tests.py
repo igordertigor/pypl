@@ -154,3 +154,28 @@ class TestLegend(svgTest):
         for marker in coll['fields']:
             self.assert_numeric_attributes(marker,
                                            ['x', 'y', 'width', 'height'])
+
+
+class TestErrorLine(svgTest):
+
+    def test_line_should_have_numeric_coordinates(self):
+        lines = plots.errorline((range(4), range(4)))
+        for line in lines['line']:
+            self.assert_numeric_paths(line, ['points'])
+
+    def test_points_should_have_numeric_coordinages(self):
+        lines = plots.errorline((range(4), range(4)))
+        for point in lines['markers']:
+            self.assert_numeric_attributes(point, ['cx', 'cy', 'r'])
+
+    def test_should_not_create_points_if_mark_is_false(self):
+        lines = plots.errorline((range(4), range(4)), mark=False)
+        self.assertNotIn('markers', lines)
+
+    def test_should_create_polygon_if_ci_is_specified(self):
+        lines = plots.errorline((range(4), range(4)),
+                                ci=(range(-1, 3), range(1, 5)))
+        self.assertIn('ci', lines)
+        for ci in lines['ci']:
+            self.assertIsInstance(ci, svgwrite.shapes.Polygon)
+            self.assert_numeric_paths(ci, ['points'])

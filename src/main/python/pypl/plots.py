@@ -95,3 +95,27 @@ def legend(names2colors, loc, step, size):
                                alignment_baseline='middle'))
         y += step
     return output
+
+
+def errorline(xy, ci=None, mark=True):
+    coords = [(x, y) for x, y in zip(*xy)]
+
+    output = ElementsCollection()
+
+    if ci is not None:
+        cix = [point[0] for point in coords]
+        cix = itertools.chain(cix, reversed(cix))
+        ciy = itertools.chain(ci[0], reversed(ci[1]))
+        cipoints = [(x, y) for x, y in zip(cix, ciy)]
+        output['ci'].append(
+            svgwrite.shapes.Polygon(cipoints))
+
+    output['line'].append(
+        svgwrite.shapes.Polyline(coords))
+
+    if mark:
+        for point in coords:
+            output['markers'].append(
+                svgwrite.shapes.Circle(point))
+
+    return output
