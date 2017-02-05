@@ -81,20 +81,29 @@ def boxplot(data, scl, loc, width):
     return output
 
 
-def legend(names2colors, loc, step, size):
+def legend(names2styles, loc, step, size, marker=svgwrite.shapes.Rect):
     output = ElementsCollection()
     x, y = loc
-    for name, color in names2colors.items():
+    for name, style in names2styles.items():
+        if isinstance(style, str):
+            style = {'fill': style}
         output['fields'].append(
-            svgwrite.shapes.Rect(insert=(x, y),
-                                 size=(size, size),
-                                 fill=color))
+            marker(*_marker2args(marker, x, y, size), **style))
         output['labels'].append(
             svgwrite.text.Text(name,
                                insert=(x+2*size, y),
                                alignment_baseline='middle'))
         y += step
     return output
+
+
+def _marker2args(marker, x, y, size):
+    translated = {
+        svgwrite.shapes.Rect: ((x, y), (size, size)),
+        svgwrite.shapes.Circle: ((x+size/2, y+size/2), size/2),
+        svgwrite.shapes.Line: ((x, y+size/2), (x+size, y+size/2))
+    }
+    return translated[marker]
 
 
 def errorline(xy, ci=None, mark=True):

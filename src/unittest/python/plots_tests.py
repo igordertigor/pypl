@@ -155,6 +155,22 @@ class TestLegend(svgTest):
             self.assert_numeric_attributes(marker,
                                            ['x', 'y', 'width', 'height'])
 
+    def test_should_have_circles_if_marker_is_circle(self):
+        coll = plots.legend({'a': '#000', 'b': '#efa'}, (10, 10), 10, 5,
+                            svgwrite.shapes.Circle)
+        for marker in coll['fields']:
+            self.assertIsInstance(marker, svgwrite.shapes.Circle)
+            self.assert_numeric_attributes(marker,
+                                           ['cx', 'cy', 'r'])
+
+    def test_should_have_lines_if_marker_is_line(self):
+        coll = plots.legend({'a': '#000', 'b': '#efa'}, (10, 10), 10, 5,
+                            svgwrite.shapes.Line)
+        for marker in coll['fields']:
+            self.assertIsInstance(marker, svgwrite.shapes.Line)
+            self.assert_numeric_attributes(marker,
+                                           ['x1', 'x2', 'y1', 'y1'])
+
 
 class TestErrorLine(svgTest):
 
