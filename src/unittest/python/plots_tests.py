@@ -68,6 +68,35 @@ class TestElementsCollection(svgTest):
                             {'YET_ANOTHER_ELEMENT'})
 
 
+class TestToSVGElements(svgTest):
+
+    def setUp(self):
+        self.coll = plots.ElementsCollection()
+        self.coll['ANY_GROUP'].append('ANY_ELEMENT')
+        self.coll['ANY_OTHER_GROUP'].append('ANY_OTHER_ELEMENT')
+        self.target = mock.Mock()
+        self.target.elements = []
+
+    def test_to_svg_elements_should_add_to_target_in_any_order(self):
+        self.coll.to_svg_elements(self.target)
+
+        self.assertSetEqual(set(self.target.elements),
+                            {'ANY_ELEMENT', 'ANY_OTHER_ELEMENT'})
+
+    def test_to_svg_elements_should_add_to_target_in_order(self):
+        self.coll.to_svg_elements(self.target,
+                                  ['ANY_OTHER_GROUP', 'ANY_GROUP'])
+
+        self.assertEqual(self.target.elements,
+                         ['ANY_OTHER_ELEMENT', 'ANY_ELEMENT'])
+
+    def test_to_svg_elements_should_allow_filtering(self):
+        self.coll.to_svg_elements(self.target, ['ANY_GROUP'])
+
+        self.assertSetEqual(set(self.target.elements),
+                            {'ANY_ELEMENT'})
+
+
 class TestScatterPlot(svgTest):
 
     def test_should_create_circle_elements_per_data_point(self):

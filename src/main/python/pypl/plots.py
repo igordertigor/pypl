@@ -34,6 +34,15 @@ class ElementsCollection(defaultdict):
             out[key].extend(val)
         return out
 
+    def to_svg_elements(self, target, order=None):
+        if order is None:
+            order = self.keys()
+
+        for key in order:
+            target.elements.extend(self[key])
+
+        return target
+
 
 def scatterplot(x, y, colors, cycle=True):
     output = ElementsCollection()
