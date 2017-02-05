@@ -25,6 +25,15 @@ class ElementsCollection(defaultdict):
             coll[sel] = self[sel]
         return coll
 
+    def __add__(self, coll):
+        out = ElementsCollection()
+        for key, val in self.items():
+            out[key].extend(val)
+
+        for key, val in coll.items():
+            out[key].extend(val)
+        return out
+
 
 def scatterplot(x, y, colors, cycle=True):
     output = ElementsCollection()

@@ -47,6 +47,26 @@ class TestElementsCollection(svgTest):
         self.assertIn('ANY_ATTRIBUTE', mock_svg_element.attribs)
         self.assertEqual(mock_svg_element.attribs['ANY_ATTRIBUTE'], 2)
 
+    def test_add_should_combine_both_summands(self):
+        coll1 = plots.ElementsCollection()
+        coll1['ANY_GROUP'].append('ANY_ELEMENT')
+        coll1['ANY_OTHER_GROUP'].append('ANY_OTHER_ELEMENT')
+        coll2 = plots.ElementsCollection()
+        coll2['ANY_GROUP'].append('ANY_THIRD_ELEMENT')
+        coll2['YET_ANOTHER_GROUP'].append('YET_ANOTHER_ELEMENT')
+
+        coll3 = coll1 + coll2
+
+        self.assertSetEqual(
+            set(coll3.keys()),
+            {'ANY_GROUP', 'ANY_OTHER_GROUP', 'YET_ANOTHER_GROUP'})
+        self.assertSetEqual(set(coll3['ANY_GROUP']),
+                            {'ANY_ELEMENT', 'ANY_THIRD_ELEMENT'})
+        self.assertSetEqual(set(coll3['ANY_OTHER_GROUP']),
+                            {'ANY_OTHER_ELEMENT'})
+        self.assertSetEqual(set(coll3['YET_ANOTHER_GROUP']),
+                            {'YET_ANOTHER_ELEMENT'})
+
 
 class TestScatterPlot(svgTest):
 
