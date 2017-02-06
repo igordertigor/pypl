@@ -50,6 +50,15 @@ class TestVAxis(svgTest):
                 for line in ax.select('line', 'ticks').elements:
                     self.assert_numeric_attributes(line, line_attrs)
 
+    def test_should_accept_list_of_ticks(self):
+        for cmd in self.runfor:
+            with self.subTest(cmd=cmd):
+                ax = cmd(self.scl, [1, 2, 3], ticklabelformat='{:.0f}')
+                self.assertEqual(len(ax['ticks']), 3)
+                self.assertSetEqual(
+                    {int(lbl.text) for lbl in ax['ticklabels']},
+                    {1, 2, 3})
+
 
 class TestTufte(svgTest):
 

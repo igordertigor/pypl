@@ -1,4 +1,5 @@
 import functools
+import collections
 import operator
 import svgwrite
 
@@ -6,16 +7,16 @@ from .plots import ElementsCollection
 from . import utils
 
 
-def vaxis(scl, nticks=5, x=0, **specs):
+def vaxis(scl, ticks=5, x=0, **specs):
     specs = set_general_defaults(specs, scl)
 
-    return makeaxis('vertical', scl, nticks, x, specs)
+    return makeaxis('vertical', scl, ticks, x, specs)
 
 
-def haxis(scl, nticks=5, y=0, **specs):
+def haxis(scl, ticks=5, y=0, **specs):
     specs = set_general_defaults(specs, scl)
 
-    return makeaxis('horizontal', scl, nticks, y, specs)
+    return makeaxis('horizontal', scl, ticks, y, specs)
 
 
 def vtufte(data, scl, x=0, offset=None, **specs):
@@ -97,10 +98,13 @@ def create_label(label, ticks, scl, label_loc):
     return svgwrite.text.Text(label, insert=label_loc(mticks))
 
 
-def makeaxis(direction, scl, nticks, loc, specs):
+def makeaxis(direction, scl, ticks, loc, specs):
     ts = specs['tick_size']
     ticklabelformat = specs['ticklabelformat']
-    ticks = get_ticks(scl, nticks)
+    if isinstance(ticks, (int, float)):
+        ticks = get_ticks(scl, ticks)
+    elif not isinstance(ticks, collections.Sequence):
+        raise ValueError('Invalid argument "ticks": {}'.format(ticks))
 
     output = ElementsCollection()
 
