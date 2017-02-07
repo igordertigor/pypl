@@ -128,3 +128,14 @@ def errorline(xy, ci=None, mark=True):
                 svgwrite.shapes.Circle(point))
 
     return output
+
+
+def bars(xy, width, base):
+    coords = [(x, y) for x, y in zip(*xy)]
+    output = ElementsCollection()
+
+    for x, y in coords:
+        output['bars'].append(
+            svgwrite.shapes.Rect((x-0.5*width, y), (width, abs(y-base))))
+
+    return output

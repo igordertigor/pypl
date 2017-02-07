@@ -195,3 +195,11 @@ class TestErrorLine(svgTest):
         for ci in lines['ci']:
             self.assertIsInstance(ci, svgwrite.shapes.Polygon)
             self.assert_numeric_paths(ci, ['points'])
+
+
+class TestBars(svgTest):
+
+    def test_should_have_numeric_coordinates(self):
+        bars = plots.bars((range(4), [1, 2, 1, 1]), .6, 0.)
+        for bar in bars['bars']:
+            self.assert_numeric_attributes(bar, ['x', 'y', 'width', 'height'])
