@@ -58,8 +58,9 @@ def tufteaxis(data, scl, loc, offset, orientation, specs):
         svgwrite.shapes.Line(*pointlocalizer(loc, [scl(p75), scl(p100)])))
 
     ticks = [p0, p25, p50, p75, p100]
+    ticks = {tick: ticklabelformat.format(tick) for tick in ticks}
     output['ticklabels'] = create_ticklabels(ticks, scl,
-                                             ticklabelformat, tick_label_loc)
+                                             tick_label_loc)
 
     if 'label' in specs:
         output['label'].append(create_label(specs['label'],
@@ -79,11 +80,11 @@ def set_general_defaults(general_spec, scl):
     return d
 
 
-def create_ticklabels(ticks, scl, ticklabelformat, label_loc):
+def create_ticklabels(ticks, scl, label_loc):
     output = []
-    for tick in ticks:
+    for tick, ticklabel in ticks.items():
         output.append(
-            svgwrite.text.Text(ticklabelformat.format(tick),
+            svgwrite.text.Text(ticklabel,
                                insert=label_loc(scl(tick))))
     return output
 
@@ -103,7 +104,12 @@ def makeaxis(direction, scl, ticks, loc, specs):
     ticklabelformat = specs['ticklabelformat']
     if isinstance(ticks, (int, float)):
         ticks = get_ticks(scl, ticks)
-    elif not isinstance(ticks, collections.Sequence):
+        ticks = {tick: ticklabelformat.format(tick) for tick in ticks}
+    elif isinstance(ticks, collections.Sequence):
+        ticks = {tick: ticklabelformat.format(tick) for tick in ticks}
+    elif isinstance(ticks, dict):
+        pass
+    else:
         raise ValueError('Invalid argument "ticks": {}'.format(ticks))
 
     output = ElementsCollection()
@@ -131,6 +137,6 @@ def makeaxis(direction, scl, ticks, loc, specs):
         output['ticks'].append(svgwrite.shapes.Line(*ticpoints(scl(tick))))
 
     output['ticklabels'] = create_ticklabels(
-        ticks, scl, ticklabelformat, tick_labl_loc)
+        ticks, scl, tick_labl_loc)
 
     return output
