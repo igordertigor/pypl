@@ -1,0 +1,3 @@
+doit
+pytest
+flake8
