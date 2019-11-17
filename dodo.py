@@ -29,3 +29,11 @@ def task_install_runtime_dependencies():
     return {
         'actions': ['pip install -r requirements/run.txt'],
     }
+
+
+def task_install():
+    return {'actions': ['python setup.py install']}
+
+
+def task_clean():
+    return {'actions': ['pip uninstall pypl']}
