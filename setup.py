@@ -15,4 +15,5 @@ setup(
     author='Ingo Fruend',
     author_email='pypl@ingofruend.net',
     packages=['pypl'],
+    licence='MIT',
 )
