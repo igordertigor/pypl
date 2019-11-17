@@ -1,3 +1,4 @@
 doit
 pytest
 flake8
+pdoc3
