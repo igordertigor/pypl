@@ -35,5 +35,9 @@ def task_install():
     return {'actions': ['python setup.py install']}
 
 
-def task_clean():
+def task_cleanup():
+    return {'actions': ['rm -r build dist pypl.egg-info __pycache__ || true']}
+
+
+def task_uninstall():
     return {'actions': ['pip uninstall pypl']}
