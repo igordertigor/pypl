@@ -76,7 +76,20 @@ class GraphElement(object):
     def render(self, tag, text):
         raise NotImplementedError
 
-    def init_kwargs(self):
+    def init_kwargs(self, custom_data):
+        """Create basic keyword arguments for the respective tag
+
+        This typically will populate the keys: id and klass from self.id_ and
+        self.class_.
+
+        Arguments:
+            custom_data:
+                dictionary with additional values. Note that these are string
+                appended!
+
+        Returns:
+            kwargs
+        """
         kwargs = {}
         if self.id_ is not None:
             kwargs['id'] = self.id_
@@ -84,6 +97,13 @@ class GraphElement(object):
             kwargs['klass'] = (self.class_
                                if isinstance(self.class_, str)
                                else ' '.join(self.class_))
+
+        for key, value in custom_data.items():
+            if key in kwargs:
+                kwargs[key] = ' '.join([value, kwargs[key]])
+            else:
+                kwargs[key] = value
+
         return kwargs
 
 
