@@ -1,0 +1,23 @@
+- respects external css file
+- by default, no style attributes on any plot elements
+- clean interface
+- objects get css-classes by default
+- all objects can get explicit css-ids
+
+TODO:
+render returns a list of class names
+allow class name prefix?
+axes
+more examples
+
+
+# Example usage
+
+fig = pypl.Figure()
+xax = pypl.XAxis(datarange=(0, 1), pixelrange=(0, 1))
+yax = pypl.YAxis(datarange=(0, 1), pixelrange=(-1, 0))
+fig.append(pypl.Group(xax, yax, id_='axes'))  # or fig.append([xax, yax])
+fig.append(pypl.Dots(xax(x), yax(y), id_='dots'))
+fig.append(pypl.Line(xax(x), yax(y), id_='line'))
+fig.append(pypl.Legend())
+fig.save('myfigure.svg')
