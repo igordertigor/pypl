@@ -6,3 +6,6 @@ from .graph_elements import (
     InlineCss,
     ExternalCss,
 )
+from .axes import (
+    LinearAxis,
+)
