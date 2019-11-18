@@ -7,6 +7,7 @@
 TODO:
 render returns a list of class names
 allow class name prefix?
+allow multiple classes
 axes
 more examples
 
