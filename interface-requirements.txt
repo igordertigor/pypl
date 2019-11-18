@@ -10,6 +10,7 @@ allow class name prefix?
 allow multiple classes
 axes
 more examples
+tests
 
 
 # Example usage
