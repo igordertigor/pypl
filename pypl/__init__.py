@@ -67,11 +67,24 @@ def render(obj, tag, text):
 class GraphElement(object):
     """Base class for any graphical elements. Do not use directly"""
 
-    name = str
-    """Name of svg element"""
+    id_ = None
+    """String holding css id"""
+
+    class_ = None
+    """String or list of strings holding css class names"""
 
     def render(self, tag, text):
         raise NotImplementedError
+
+    def init_kwargs(self):
+        kwargs = {}
+        if self.id_ is not None:
+            kwargs['id'] = self.id_
+        if self.class_ is not None:
+            kwargs['klass'] = (self.class_
+                               if isinstance(self.class_, str)
+                               else ' '.join(self.class_))
+        return kwargs
 
 
 class Group(GraphElement):
@@ -82,11 +95,7 @@ class Group(GraphElement):
         self.objects = objects
 
     def render(self, tag, text):
-        kwargs = {}
-        if self.id_:
-            kwargs['id'] = self.id_
-        if self.class_:
-            kwargs['klass'] = self.class_
+        kwargs = self.init_kwargs()
         with tag('g', **kwargs):
             for obj in self.objects:
                 render(obj, tag, text)
@@ -120,15 +129,16 @@ class ExternalCss(GraphElement):
 
 class XY(GraphElement):
 
-    def __init__(self, x, y, id_=None):
+    def __init__(self, x, y, id_=None, class_=None):
         self.x = x
         self.y = y
         self.id_ = id_
+        self.class_ = class_
 
 
 class Line(XY):
 
-    def __init__(self, x, y, id_=None):
+    def __init__(self, x, y, id_=None, class_=None):
         """Draw a line
 
         Arguments:
@@ -136,14 +146,14 @@ class Line(XY):
                 sequences of x and y coordinates
             id_:
                 css id for selection
+            class_:
+                string or list of string holding css classes
         """
-        super(Line, self).__init__(x, y, id_)
+        super(Line, self).__init__(x, y, id_, class_)
 
     def render(self, tag, text):
         """Render object through given tag closure"""
-        kwargs = {'klass': 'line-plot'}
-        if self.id_:
-            kwargs['id'] = self.id_
+        kwargs = self.init_kwargs({'klass': 'line-plot'})
         with tag('polyline',
                  points=' '.join(['{},{}'.format(x, y)
                                   for x, y in zip(self.x, self.y)]),
@@ -154,7 +164,7 @@ class Line(XY):
 
 class Dots(XY):
 
-    def __init__(self, x, y, r=3, id_=None):
+    def __init__(self, x, y, r=3, id_=None, class_=None):
         """Draw a collection of dots (all the same color)
 
         Arguments:
@@ -165,6 +175,8 @@ class Dots(XY):
                 sequence (one size per point)
             id_:
                 css id for selection
+            class_:
+                string or list of string holding css classes
         """
         super(Dots, self).__init__(x, y, id_)
         if isinstance(r, (int, float)):
@@ -174,14 +186,12 @@ class Dots(XY):
 
     def render(self, tag, text):
         """Render object through given tag closure"""
-        kwargs = {'klass': 'dot-plot'}
-        if self.id_:
-            kwargs['id'] = self.id_
+        kwargs = self.init_kwargs({'klass': 'dot-plot'})
         with tag('g', **kwargs):
             for x, y, r in zip(self.x, self.y, cycle(self.r)):
                 with tag('circle',
                          cx=x,
                          cy=y,
                          r=r,
-                         klass='dot-plot-marker'):
+                         klass=self.init_kwargs({'klass': 'dot-plot-marker'})):
                     pass
