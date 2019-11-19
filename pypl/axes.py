@@ -4,11 +4,14 @@ from .scales import linear_scale
 
 class Axis(GraphElement):
 
-    def __init__(self, orientation, rng_in, rng_out, loc):
+    def __init__(self, orientation, rng_in, rng_out, loc,
+                 id_=None, class_=None):
         self.rng_in = rng_in
         self.rng_out = rng_out
         self.loc = loc
         self.orientation = orientation
+        self.id_ = id_
+        self.class_ = class_
 
     def __call__(self, vals):
         """Scale values to axis"""
@@ -17,7 +20,8 @@ class Axis(GraphElement):
 
 class LinearAxis(Axis):
 
-    def __init__(self, orientation, tics, rng, loc, **kwargs):
+    def __init__(self, orientation, tics, rng, loc,
+                 id_=None, class_=None, **kwargs):
         """Create a linear axis
 
         Arguments:
@@ -41,7 +45,10 @@ class LinearAxis(Axis):
             [tics[0], tics[-1]],
             rng,
             loc,
+            id_=id_,
+            class_=class_
         )
+
         self.tics = tics
         self.scaler = linear_scale(self.rng_in, self.rng_out)
 
@@ -55,20 +62,27 @@ class LinearAxis(Axis):
         if self.orientation.lower() in ['x', 'horizontal']:
             axargs = {'x1': self.rng_out[0], 'x2': self.rng_out[1],
                       'y1': self.loc, 'y2': self.loc}
-            ticargs = {'y1': self.loc, 'y2': self.loc + self.ticksize}
+            ticargs = {'y1': self.loc, 'y2': self.loc + self.ticksize,
+                       'klass': 'xtick tick'}
             ticpos, off = 'x', 'y'
         elif self.orientation.lower() in ['y', 'vertical']:
             axargs = {'x1': self.loc, 'x2': self.loc,
                       'y1': self.rng_out[0], 'y2': self.rng_out[1]}
-            ticargs = {'x1': self.loc, 'x2': self.loc + self.ticksize}
+            ticargs = {'x1': self.loc, 'x2': self.loc + self.ticksize,
+                       'klass': 'ytick tick'}
             ticpos, off = 'y', 'x'
-        with tag('g'):
-            with tag('line', klass='axis', **axargs):
+        with tag('g', **self.init_kwargs({'klass': '{} axis'.format(ticpos)})):
+            with tag('line', **self.init_kwargs(dict(klass='axis-line',
+                                                     **axargs))):
                 pass
             for ticval, ticloc in zip(self.tics, self.scale(self.tics)):
                 ticargs.update({ticpos+'0': ticloc, ticpos+'1': ticloc})
-                with tag('line', **ticargs):
+                with tag('line', **self.init_kwargs(ticargs)):
                     pass
-                with tag('text', **{ticpos: ticloc,
-                                    off: self.loc + 2*self.ticksize}):
+                with tag('text',
+                         **self.init_kwargs({
+                             ticpos: ticloc,
+                             off: self.loc + 2*self.ticksize,
+                             'klass': 'ticklabel {}ticklabel'.format(ticpos)
+                         })):
                     text(self.tickfmt.format(ticval))
