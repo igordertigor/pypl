@@ -15,7 +15,7 @@ class Axis(GraphElement):
 
     def __call__(self, vals):
         """Scale values to axis"""
-        self.scale(vals)
+        return self.scale(vals)
 
 
 class LinearAxis(Axis):
@@ -76,7 +76,7 @@ class LinearAxis(Axis):
                                                      **axargs))):
                 pass
             for ticval, ticloc in zip(self.tics, self.scale(self.tics)):
-                ticargs.update({ticpos+'0': ticloc, ticpos+'1': ticloc})
+                ticargs.update({ticpos+'1': ticloc, ticpos+'2': ticloc})
                 with tag('line', **self.init_kwargs(ticargs)):
                     pass
                 with tag('text',

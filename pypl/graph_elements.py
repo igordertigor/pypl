@@ -22,7 +22,7 @@ class GraphElement(object):
     def render(self, tag, text):
         raise NotImplementedError
 
-    def init_kwargs(self, custom_data):
+    def init_kwargs(self, custom_data=None):
         """Create basic keyword arguments for the respective tag
 
         This typically will populate the keys: id and klass from self.id_ and
@@ -36,6 +36,8 @@ class GraphElement(object):
         Returns:
             kwargs
         """
+        if custom_data is None:
+            custom_data = {}
         kwargs = {}
         if self.id_ is not None:
             kwargs['id'] = self.id_
@@ -159,5 +161,5 @@ class Dots(XY):
                          cx=x,
                          cy=y,
                          r=r,
-                         klass=self.init_kwargs({'klass': 'dot-plot-marker'})):
+                         **self.init_kwargs({'klass': 'dot-plot-marker'})):
                     pass
